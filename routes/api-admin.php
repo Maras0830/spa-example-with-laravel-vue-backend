@@ -13,15 +13,17 @@ $api = app('Dingo\Api\Routing\Router');
 |
 */
 
-$api->version('v1', ['prefix' => 'api/admin', 'middleware' => 'api.custom.auth.guard:admin', 'namespace' => 'App\Http\Controllers\API\v1\Admin'], function ($api) {
+$api->version('v1', ['namespace' => 'App\Http\Controllers\API\v1\Admin'], function ($api) {
 
-    $api->get('/', 'UserController@login');
-    $api->post('/login', 'AuthController@authenticate');
-    $api->post('/logout', 'AuthController@logout');
+    $api->group(['prefix' => 'api/admin', 'middleware' => 'api.custom.auth.guard:admin'], function ($api) {
+        $api->get('/', 'UserController@login');
+        $api->post('/login', 'AuthController@authenticate');
+        $api->post('/logout', 'AuthController@logout');
 
-    # Authenticated Section
-    $api->group(['middleware' => 'api.custom.auth:admin'], function ($api) {
-        $api->get('/me', 'UserController@getMe');
-        $api->get('/comments', 'UserController@getComments');
+        # Authenticated Section
+        $api->group(['middleware' => 'api.custom.auth:admin'], function ($api) {
+            $api->get('/me', 'UserController@getMe');
+            $api->get('/comments', 'UserController@getComments');
+        });
     });
 });

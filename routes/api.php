@@ -1,5 +1,7 @@
 <?php
 
+app('Dingo\Api\Transformer\Factory')->register('Post', 'PostTransformer');
+
 $api = app('Dingo\Api\Routing\Router');
 
 /*
@@ -13,14 +15,18 @@ $api = app('Dingo\Api\Routing\Router');
 |
 */
 
-$api->version('v1', ['middleware' => 'api.custom.auth.guard:api', 'namespace' => 'App\Http\Controllers\API\v1\User'], function ($api) {
+$api->version('v1', ['namespace' => 'App\Http\Controllers\API\v1'], function ($api) {
+    $api->get('/posts', 'PostController@getPosts');
 
-    $api->post('/login', 'AuthController@authenticate');
-    $api->post('/logout', 'AuthController@logout');
+    $api->group(['middleware' => 'api.custom.auth.guard:api', 'namespace' => 'App\Http\Controllers\API\v1\User'], function ($api) {
 
-    # Authenticated Section
-    $api->group(['middleware' => 'api.custom.auth:api'], function ($api) {
-        $api->get('/me', 'UserController@getMe');
-        $api->get('/comments', 'UserController@getComments');
+        $api->post('/login', 'AuthController@authenticate');
+        $api->post('/logout', 'AuthController@logout');
+
+        # Authenticated Section
+        $api->group(['middleware' => 'api.custom.auth:api'], function ($api) {
+            $api->get('/me', 'UserController@getMe');
+            $api->get('/comments', 'UserController@getComments');
+        });
     });
 });
