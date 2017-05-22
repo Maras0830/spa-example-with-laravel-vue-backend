@@ -2,13 +2,10 @@
 
 namespace App;
 
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Model;
 
-class User extends Authenticatable
+class Admin extends Model
 {
-    use Notifiable;
-
     /**
      * The attributes that are mass assignable.
      *
@@ -27,7 +24,12 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
-    public function comments()
+    public function Posts()
+    {
+        return $this->hasMany('App\Post');
+    }
+
+    public function Comments()
     {
         return $this->hasMany('App\Comment');
     }

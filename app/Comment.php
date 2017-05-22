@@ -2,20 +2,17 @@
 
 namespace App;
 
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Model;
 
-class User extends Authenticatable
+class Comment extends Model
 {
-    use Notifiable;
-
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'title', 'content', 'comment_id'
     ];
 
     /**
@@ -24,8 +21,18 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'comment_from_id', 'comment_from_type', 'comment_id'
     ];
+
+    public function post()
+    {
+        return $this->belongsTo('App\Post');
+    }
+
+    public function main_comment()
+    {
+        return $this->belongsTo('App\Comment');
+    }
 
     public function comments()
     {
@@ -34,6 +41,6 @@ class User extends Authenticatable
 
     public function comment_from()
     {
-        return $this->morphMany('App\Comment', 'comment_from');
+        return $this->morphTo();
     }
 }
