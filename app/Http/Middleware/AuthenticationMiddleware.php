@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Support\Facades\Config;
+use Tymon\JWTAuth\Claims\Custom;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 use Tymon\JWTAuth\Exceptions\TokenExpiredException;
@@ -20,11 +21,19 @@ class AuthenticationMiddleware
      * @param string $auth
      * @return mixed
      */
-    public function handle($request, Closure $next, string $auth = '')
+    public function handle($request, Closure $next, string $auth)
     {
         try {
-            if (! $user = JWTAuth::parseToken()->authenticate()) {
+            JWTAuth::setRequest($request);
+
+            if (! $user = JWTAuth::toUser(JWTAuth::getToken())) {
                 return response()->json(['user_not_found'], 404);
+            }
+
+            $claims = JWTAuth::getPayload(JWTAuth::getToken())->toArray();
+
+            if ($claims['type'] !== $auth) {
+                return response()->json([ $auth . '_not_found'], 404);
             }
 
             $request->merge(['auth' => $user]);

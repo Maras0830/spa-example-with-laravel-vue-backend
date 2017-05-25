@@ -15,15 +15,17 @@ $api = app('Dingo\Api\Routing\Router');
 
 $api->version('v1', ['namespace' => 'App\Http\Controllers\API\v1\Admin'], function ($api) {
 
+//    $api->resource('posts', 'PostController');
+
     $api->group(['prefix' => '/admin', 'middleware' => 'api.custom.auth.guard:admin'], function ($api) {
         $api->get('/', 'UserController@login');
-        $api->post('/login', 'AuthController@authenticate');
+        $api->post('/login', 'AuthController@authenticate')->name('admin.login');
         $api->post('/logout', 'AuthController@logout');
 
         # Authenticated Section
         $api->group(['middleware' => 'api.custom.auth:admin'], function ($api) {
-            $api->get('/me', 'UserController@getMe');
-            $api->get('/comments', 'UserController@getComments');
+            $api->get('/me', 'UserController@getMe')->name('admin.me');
+            $api->get('/comments', 'UserController@getComments')->name('admin.posts.index');
         });
     });
 });

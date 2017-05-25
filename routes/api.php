@@ -19,21 +19,20 @@ $api = app('Dingo\Api\Routing\Router');
 $api->version('v1', ['prefix' => 'api', 'namespace' => 'App\Http\Controllers\API\v1\User'], function ($api) {
 
 //    # GET POSTS LIST
-//    $api->get('/posts', 'PostController@getPosts')->name('posts.index');
+    $api->get('/posts', 'PostController@getPosts')->name('posts.index');
 //    # GET POST
-//    $api->get('/posts/{id}', 'PostController@getPost')->name('user.post');
+    $api->get('/posts/{id}', 'PostController@getPost')->name('posts.show');
 
-    $api->resource('posts', 'PostController');
 
-    $api->group(['middleware' => 'api.custom.auth.guard:api'], function ($api) {
+    $api->group(['middleware' => 'api.custom.auth.guard:user'], function ($api) {
 
         $api->post('/login', 'AuthController@authenticate')->name('user.login');
         $api->post('/logout', 'AuthController@logout');
 
         # Authenticated Section
-        $api->group(['middleware' => 'api.custom.auth:api'], function ($api) {
-            $api->get('/me', 'UserController@getMe');
-            $api->get('/comments', 'UserController@getComments');
+        $api->group(['middleware' => 'api.custom.auth:user'], function ($api) {
+            $api->get('/me', 'UserController@getMe')->name('user.me');
+            $api->get('/comments', 'UserController@getComments')->name('user.comments.index');
         });
     });
 });

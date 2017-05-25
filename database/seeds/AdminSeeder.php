@@ -3,6 +3,7 @@
 use App\Admin;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class AdminSeeder extends Seeder
 {
@@ -13,7 +14,7 @@ class AdminSeeder extends Seeder
      */
     public function run()
     {
-        factory(Admin::class)->create(['email' => 'maraschen@codingweb.tw', 'password' => '123456']);
+        factory(Admin::class)->create(['email' => 'maraschen@codingweb.tw', 'password' => HASH::make('123456')]);
         factory(Admin::class, 10)->create();
     }
 }

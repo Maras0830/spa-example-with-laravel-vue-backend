@@ -5,6 +5,8 @@ namespace App\Http\Controllers\API\v1\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
+use Illuminate\Support\Facades\Config;
+use Tymon\JWTAuth\Claims\Expiration;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
 
@@ -15,17 +17,29 @@ class AuthController extends Controller
         // grab credentials from the request
         $credentials = $request->only('email', 'password');
 
+        Config::set('jwt.user', 'App\Admin');
+
         try {
             // attempt to verify the credentials and create a token for the user
             if (! $token = JWTAuth::attempt($credentials)) {
-                return response()->json(['error' => 'invalid_credentials'], 401);
+                return response()->json(['error' => 'invalid_credentials', 'status_code' => 401], 200);
             }
+
+            $token = JWTAuth::fromUser(JWTAuth::toUser($token), ['type' => 'admin']);
+
+            $claims = JWTAuth::getPayload($token)->getClaims();
+
+            $token_ttl = array_values(array_filter($claims, function($claim){
+                return $claim instanceof Expiration;
+            }))[0]->getValue();
+
+            $admin = JWTAuth::toUser($token)->toArray();
         } catch (JWTException $e) {
             // something went wrong whilst attempting to encode the token
             return response()->json(['error' => 'could_not_create_token'], 500);
         }
 
         // all good so return the token
-        return response()->json(compact('token'));
+        return response()->json(compact('token', 'token_ttl', 'admin'));
     }
 }
