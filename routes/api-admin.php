@@ -15,7 +15,7 @@ $api = app('Dingo\Api\Routing\Router');
 
 $api->version('v1', ['namespace' => 'App\Http\Controllers\API\v1\Admin'], function ($api) {
 
-    $api->group(['prefix' => 'api/admin', 'middleware' => 'api.custom.auth.guard:admin'], function ($api) {
+    $api->group(['prefix' => '/admin', 'middleware' => 'api.custom.auth.guard:admin'], function ($api) {
         $api->get('/', 'UserController@login');
         $api->post('/login', 'AuthController@authenticate');
         $api->post('/logout', 'AuthController@logout');

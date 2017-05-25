@@ -1,5 +1,6 @@
 <?php
 
+use App\Post;
 use Illuminate\Database\Seeder;
 
 class PostSeeder extends Seeder
@@ -11,11 +12,25 @@ class PostSeeder extends Seeder
      */
     public function run()
     {
-        for ($i = 0; $i<25; $i++)
-            DB::table('posts')->insert([
-                'title' => str_random(8),
-                'content' => str_random(40),
-                'author_id' => 1,
-            ]);
+        factory(Post::class, 10)->create()
+            ->each(function($post) {
+                factory(App\Comment::class, 2)->create([
+                    'post_id' => $post->id,
+                    'comment_from_id' => factory(App\Admin::class)->create()->id,
+                    'comment_from_type' => 'App\\Admin',
+                ]);
+                factory(App\Comment::class, 8)->create([
+                    'post_id' => $post->id,
+                    'comment_from_id' => factory(App\User::class)->create()->id,
+                    'comment_from_type' => 'App\\User',
+                ])->each(function ($comment) use ($post){
+                    factory(App\Comment::class, 2)->create([
+                        'post_id' => $post->id,
+                        'comment_from_id' => factory(App\User::class)->create()->id,
+                        'comment_from_type' => 'App\\User',
+                        'comment_id' => $comment->id,
+                    ]);
+                });
+            });
     }
 }

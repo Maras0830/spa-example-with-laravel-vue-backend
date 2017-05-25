@@ -20,7 +20,7 @@ class CreateCommentsTable extends Migration
             $table->integer('post_id');
             $table->integer('comment_from_id');
             $table->string('comment_from_type');
-            $table->integer('comment_id');
+            $table->integer('comment_id')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

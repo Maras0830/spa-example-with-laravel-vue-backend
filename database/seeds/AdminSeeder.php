@@ -1,5 +1,6 @@
 <?php
 
+use App\Admin;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -12,10 +13,7 @@ class AdminSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('admins')->insert([
-            'name' => str_random(10),
-            'email' => 'maraschen@gmail.com',
-            'password' => bcrypt('secret')
-        ]);
+        factory(Admin::class)->create(['email' => 'maraschen@coindgweb.tw', 'password' => '123456']);
+        factory(Admin::class, 10)->create();
     }
 }

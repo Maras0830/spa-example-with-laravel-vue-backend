@@ -1,6 +1,7 @@
 <?php
 
 app('Dingo\Api\Transformer\Factory')->register('Post', 'PostTransformer');
+app('Dingo\Api\Transformer\Factory')->register('Admin', 'AdminTransformer');
 
 $api = app('Dingo\Api\Routing\Router');
 
@@ -15,10 +16,16 @@ $api = app('Dingo\Api\Routing\Router');
 |
 */
 
-$api->version('v1', ['namespace' => 'App\Http\Controllers\API\v1'], function ($api) {
-    $api->get('/posts', 'PostController@getPosts');
+$api->version('v1', ['prefix' => 'api', 'namespace' => 'App\Http\Controllers\API\v1\User'], function ($api) {
 
-    $api->group(['middleware' => 'api.custom.auth.guard:api', 'namespace' => 'App\Http\Controllers\API\v1\User'], function ($api) {
+//    # GET POSTS LIST
+//    $api->get('/posts', 'PostController@getPosts')->name('posts.index');
+//    # GET POST
+//    $api->get('/posts/{id}', 'PostController@getPost')->name('user.post');
+
+    $api->resource('posts', 'PostController');
+
+    $api->group(['middleware' => 'api.custom.auth.guard:api'], function ($api) {
 
         $api->post('/login', 'AuthController@authenticate');
         $api->post('/logout', 'AuthController@logout');
