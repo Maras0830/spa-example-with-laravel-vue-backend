@@ -37,8 +37,7 @@ class PostTransformer extends TransformerAbstract
 
     public function includeComments(Post $post)
     {
-        if (count($post->comments) > 0)
-            return $this->collection($post->comments, new CommentTransformer());
+        return $this->collection($post->comments, new CommentTransformer());
     }
 
 }

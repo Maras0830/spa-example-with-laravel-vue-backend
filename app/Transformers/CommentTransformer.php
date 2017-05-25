@@ -33,7 +33,6 @@ class CommentTransformer extends TransformerAbstract
 
     public function includeSubComments(Comment $comment)
     {
-        if (count($comment->comments) > 0)
-            return $this->collection($comment->comments, new CommentTransformer());
+        return $this->collection($comment->comments, new CommentTransformer());
     }
 }

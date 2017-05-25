@@ -12,14 +12,14 @@ class PostController extends Controller
 {
     use Helpers;
 
-    public function index()
+    public function getPosts()
     {
         $posts = Post::orderBy('created_at', 'DESC')->paginate(3);
 
         return $this->response->paginator($posts, new PostTransformer());
     }
 
-    public function show($id)
+    public function getPost($id)
     {
         $post = Post::find($id);
 
@@ -27,22 +27,5 @@ class PostController extends Controller
             return $this->response->errorNotFound('Post not found');
 
         return $this->response->item($post, new PostTransformer());
-    }
-
-    public function store(Request $request)
-    {
-        $post = Post::create($request->input('posts'));
-
-        return $this->response->item($post, new PostTransformer());
-    }
-
-    public function update()
-    {
-        
-    }
-
-    public function destroy()
-    {
-        
     }
 }
