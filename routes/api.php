@@ -27,7 +27,7 @@ $api->version('v1', ['prefix' => 'api', 'namespace' => 'App\Http\Controllers\API
 
     $api->group(['middleware' => 'api.custom.auth.guard:api'], function ($api) {
 
-        $api->post('/login', 'AuthController@authenticate');
+        $api->post('/login', 'AuthController@authenticate')->name('user.login');
         $api->post('/logout', 'AuthController@logout');
 
         # Authenticated Section

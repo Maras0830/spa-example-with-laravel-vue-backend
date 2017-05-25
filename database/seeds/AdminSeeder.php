@@ -13,7 +13,7 @@ class AdminSeeder extends Seeder
      */
     public function run()
     {
-        factory(Admin::class)->create(['email' => 'maraschen@coindgweb.tw', 'password' => '123456']);
+        factory(Admin::class)->create(['email' => 'maraschen@codingweb.tw', 'password' => '123456']);
         factory(Admin::class, 10)->create();
     }
 }
