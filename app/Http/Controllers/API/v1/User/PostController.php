@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\API\v1\User;
 
 use App\Post;
-use App\Transformers\PostTransformer;
+use App\Transformers\v1\PostTransformer;
 use Dingo\Api\Http\Request;
 use Dingo\Api\Routing\Helpers;
 use App\Http\Controllers\Controller;

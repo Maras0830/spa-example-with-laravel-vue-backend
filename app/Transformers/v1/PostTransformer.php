@@ -1,8 +1,8 @@
 <?php
-namespace App\Transformers;
+
+namespace App\Transformers\v1;
 
 use App\Post;
-use DateTime;
 use League\Fractal\TransformerAbstract;
 
 class PostTransformer extends TransformerAbstract
@@ -18,12 +18,12 @@ class PostTransformer extends TransformerAbstract
     public function transform(Post $post): array
     {
         return [
-            'id'           => (int) $post->id,
-            'title'        => $post->title,
-            'content'      => $post->content,
-            'created_at'   => $post->created_at,
-            'time_ago'     => time_ago($post->created_at),
-            'url'          => app('Dingo\Api\Routing\UrlGenerator')->version('v1')->route('posts.show', $post->id)
+            'id' => (int)$post->id,
+            'title' => $post->title,
+            'content' => $post->content,
+            'created_at' => $post->created_at,
+            'time_ago' => time_ago($post->created_at),
+            'url' => app('Dingo\Api\Routing\UrlGenerator')->version('v1')->route('posts.show', $post->id)
         ];
     }
 

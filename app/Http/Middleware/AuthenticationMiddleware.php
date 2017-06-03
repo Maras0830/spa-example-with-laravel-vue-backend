@@ -24,6 +24,8 @@ class AuthenticationMiddleware
     public function handle($request, Closure $next, string $auth)
     {
         try {
+            Config::set('jwt.user', 'App\\' . camel_case($auth));
+
             JWTAuth::setRequest($request);
 
             if (! $user = JWTAuth::toUser(JWTAuth::getToken())) {

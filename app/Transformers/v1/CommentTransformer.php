@@ -1,5 +1,5 @@
 <?php
-namespace App\Transformers;
+namespace App\Transformers\v1;
 
 use App\Comment;
 use League\Fractal\TransformerAbstract;
