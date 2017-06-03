@@ -1,6 +1,6 @@
 <?php
 
-function time_ago($datetime, $full = false): string
+function time_ago($datetime, $full = false)
 {
     $now = new DateTime;
     $ago = new DateTime($datetime);
