@@ -20,5 +20,4 @@ class AdminTransformer extends TransformerAbstract
             'email'        => (string) $admin->email
         ];
     }
-
 }

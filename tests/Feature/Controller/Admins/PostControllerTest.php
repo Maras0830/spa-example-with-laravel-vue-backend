@@ -17,8 +17,9 @@ class PostControllerTest extends TestCase
     use DatabaseMigrations;
 
     /**
-     * A basic test example.
      *
+     * @group admins.controller.posts
+     * @test
      * @return void
      */
     public function testPostsCreateSuccessful()
@@ -49,6 +50,12 @@ class PostControllerTest extends TestCase
         ]);
     }
 
+    /**
+     *
+     * @group admins.controller.posts
+     * @test
+     * @return void
+     */
     public function testPostsUpdateSuccessful()
     {
         // Arrange
@@ -76,8 +83,15 @@ class PostControllerTest extends TestCase
         $response->assertJsonStructure([
             'data' => ['id', 'title', 'content', 'created_at', 'time_ago', 'url', 'author', 'comments'],
         ]);
+        $response->assertJson(['data' => ['title' => $except['title'], 'content' => $except['content']]]);
     }
 
+    /**
+     *
+     * @group admins.controller.posts
+     * @test
+     * @return void
+     */
     public function testPostsUpdateFailed()
     {
         // Arrange

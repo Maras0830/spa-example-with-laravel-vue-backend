@@ -18,10 +18,11 @@ $api = app('Dingo\Api\Routing\Router');
 
 $api->version('v1', ['prefix' => 'api', 'namespace' => 'App\Http\Controllers\API\v1\User'], function ($api) {
 
-//    # GET POSTS LIST
     $api->get('/posts', 'PostController@getPosts')->name('posts.index');
-//    # GET POST
     $api->get('/posts/{id}', 'PostController@getPost')->name('posts.show');
+
+    $api->get('/authors', 'AuthorController@getAuthors')->name('authors.index');
+    $api->get('/authors/{id}', 'AuthorController@getAuthor')->name('authors.show');
 
     $api->group(['middleware' => 'api.custom.auth.guard:user'], function ($api) {
 
