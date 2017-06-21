@@ -41,4 +41,18 @@ class PostController extends Controller
 
         return $this->response->errorInternal();
     }
+
+    public function deletePost(Request $request, $post_id)
+    {
+//        $post = $request->user()->posts()->find($post_id);
+        $post = Post::find($post_id);
+
+        if (empty($post))
+            return $this->response->errorNotFound('data not found.');
+
+        if ($post->delete())
+            return $this->response->accepted();
+
+        return $this->response->errorInternal();
+    }
 }

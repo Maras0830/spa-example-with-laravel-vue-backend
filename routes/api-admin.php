@@ -29,6 +29,7 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers\API\v1\Admin'], functi
             # Post
             $api->post('/posts', 'PostController@postPost')->name('admin.posts.store');
             $api->put('/posts/{id}', 'PostController@putPost')->name('admin.posts.update');
+            $api->delete('/posts/{id}', 'PostController@deletePost')->name('admin.posts.delete');
 
             $api->get('/comments', 'UserController@getComments')->name('admin.posts.index');
         });

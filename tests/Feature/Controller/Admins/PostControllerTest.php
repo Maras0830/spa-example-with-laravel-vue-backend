@@ -119,4 +119,37 @@ class PostControllerTest extends TestCase
             'message', 'status_code'
         ]);
     }
+
+
+    /**
+     *
+     * @group admins.controller.posts
+     * @test
+     * @return void
+     */
+    public function testPostsDeleteSuccessful()
+    {
+        // Arrange
+        $email = 'maraschen@codingweb.tw';
+
+        $admin = factory(Admin::class)->create(['email' => $email]);
+        factory(Post::class)->create(['author_id' => $admin->id]);
+
+        Config::set('jwt.user', 'App\Admin');
+
+        $token = JWTAuth::fromUser($admin, ['type' => 'admin']);
+
+        $headers = ['Authorization' => 'Bearer ' . $token];
+
+        $except = [
+            'title' => 'Hello',
+            'content' => 'Content',
+        ];
+
+        // Act
+        $response = $this->json('DELETE', app('Dingo\Api\Routing\UrlGenerator')->version('v1')->route('admin.posts.delete', 1), $except, $headers);
+
+        // Assert
+        $response->assertStatus(Response::HTTP_ACCEPTED);
+    }
 }
