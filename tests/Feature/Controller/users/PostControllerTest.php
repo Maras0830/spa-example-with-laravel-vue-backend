@@ -9,6 +9,9 @@ use App\User;
 use Illuminate\Http\Response;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use JWTAuth;
+use Hash;
+use Config;
 
 class PostControllerTest extends TestCase
 {
@@ -114,4 +117,5 @@ class PostControllerTest extends TestCase
             'message', 'status_code'
         ]);
     }
+
 }

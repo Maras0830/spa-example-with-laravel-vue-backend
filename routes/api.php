@@ -23,7 +23,6 @@ $api->version('v1', ['prefix' => 'api', 'namespace' => 'App\Http\Controllers\API
 //    # GET POST
     $api->get('/posts/{id}', 'PostController@getPost')->name('posts.show');
 
-
     $api->group(['middleware' => 'api.custom.auth.guard:user'], function ($api) {
 
         $api->post('/login', 'AuthController@authenticate')->name('user.login');

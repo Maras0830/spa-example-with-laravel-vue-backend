@@ -2,15 +2,17 @@
 
 namespace App\Http\Controllers\API\v1\User;
 
+use App\Transformers\v1\UserTransformer;
+use Dingo\Api\Routing\Helpers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class UserController extends Controller
 {
+    use Helpers;
+
     public function getMe(Request $request)
     {
-        $user = $request->input('auth');
-
-        return response()->json(['data' => $user, 'status_code' => 200, 'message' => 'successful.'], 200);
+        return $this->response->item($request->user(), new UserTransformer);
     }
 }

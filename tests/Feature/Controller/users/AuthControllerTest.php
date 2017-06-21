@@ -9,6 +9,7 @@ use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use JWTAuth;
 
 class AuthControllerTest extends TestCase
 {
@@ -84,25 +85,20 @@ class AuthControllerTest extends TestCase
         $email = 'maraschen@codingweb.tw';
         $password = '123456';
 
-        factory(User::class)->create([
+        $user = factory(User::class)->create([
             'email' => $email,
             'password' => Hash::make($password),
         ]);
 
-        $login_response = $this->json('POST', app('Dingo\Api\Routing\UrlGenerator')->version('v1')->route('user.login'), [
-            'email' => $email,
-            'password' => $password,
-        ]);
+        $token = JWTAuth::fromUser($user, ['type' => 'user']);
 
-        $headers = ['Authorization' => 'bearer ' . $login_response->decodeResponseJson()['token']];
+        $headers = ['Authorization' => 'Bearer ' . $token];
 
         $response = $this->json('GET', app('Dingo\Api\Routing\UrlGenerator')->version('v1')->route('user.me'), [], $headers);
 
         $response->assertStatus(Response::HTTP_OK);
 
         $response->assertJsonStructure([
-            'message',
-            'status_code',
             'data' => ['id', 'name', 'email']
         ]);
     }

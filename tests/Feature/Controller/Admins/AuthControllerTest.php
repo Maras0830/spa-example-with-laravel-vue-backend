@@ -3,12 +3,16 @@
 namespace Tests\Feature\Controller\Admins;
 
 use App\Admin;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Hash;
+use Mockery;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use JWTAuth;
+use Config;
 
 class AuthControllerTest extends TestCase
 {
@@ -84,25 +88,22 @@ class AuthControllerTest extends TestCase
         $email = 'maraschen@codingweb.tw';
         $password = '123456';
 
-        factory(Admin::class)->create([
+        $admin = factory(Admin::class)->create([
             'email' => $email,
             'password' => Hash::make($password),
         ]);
 
-        $login_response = $this->json('POST', app('Dingo\Api\Routing\UrlGenerator')->version('v1')->route('admin.login'), [
-            'email' => $email,
-            'password' => $password,
-        ]);
+        Config::set('jwt.user', 'App\Admin');
 
-        $headers = ['Authorization' => 'bearer ' . $login_response->decodeResponseJson()['token']];
+        $token = JWTAuth::fromUser($admin, ['type' => 'admin']);
+
+        $headers = ['Authorization' => 'Bearer ' . $token];
 
         $response = $this->json('GET', app('Dingo\Api\Routing\UrlGenerator')->version('v1')->route('admin.me'), [], $headers);
 
         $response->assertStatus(Response::HTTP_OK);
 
         $response->assertJsonStructure([
-            'message',
-            'status_code',
             'data' => ['id', 'name', 'email']
         ]);
     }

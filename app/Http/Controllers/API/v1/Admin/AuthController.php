@@ -17,15 +17,11 @@ class AuthController extends Controller
         // grab credentials from the request
         $credentials = $request->only('email', 'password');
 
-        Config::set('jwt.user', 'App\Admin');
-
         try {
             // attempt to verify the credentials and create a token for the user
-            if (! $token = JWTAuth::attempt($credentials)) {
+            if (! $token = JWTAuth::attempt($credentials, ['type' => 'admin'])) {
                 return response()->json(['error' => 'invalid_credentials', 'status_code' => 401], 200);
             }
-
-            $token = JWTAuth::fromUser(JWTAuth::toUser($token), ['type' => 'admin']);
 
             $claims = JWTAuth::getPayload($token)->getClaims();
 

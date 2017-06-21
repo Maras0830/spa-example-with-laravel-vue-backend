@@ -24,8 +24,6 @@ class AuthenticationMiddleware
     public function handle($request, Closure $next, string $auth)
     {
         try {
-            Config::set('jwt.user', 'App\\' . camel_case($auth));
-
             JWTAuth::setRequest($request);
 
             if (! $user = JWTAuth::toUser(JWTAuth::getToken())) {
@@ -38,7 +36,9 @@ class AuthenticationMiddleware
                 return response()->json([ $auth . '_not_found'], 404);
             }
 
-            $request->merge(['auth' => $user]);
+            $request->setUserResolver(function () use ($user) {
+                return $user;
+            });
 
         } catch (TokenExpiredException $e) {
 

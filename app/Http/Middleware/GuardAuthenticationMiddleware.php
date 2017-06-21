@@ -17,8 +17,10 @@ class GuardAuthenticationMiddleware
      */
     public function handle($request, Closure $next, string $auth = '')
     {
-        if (!empty($auth))
+        if (!empty($auth)) {
             Config::set('auth.defaults.guard', $auth);
+            Config::set('jwt.user', 'App\\' . camel_case($auth));
+        }
 
         return $next($request);
     }

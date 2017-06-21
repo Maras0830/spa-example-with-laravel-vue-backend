@@ -25,6 +25,11 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers\API\v1\Admin'], functi
         # Authenticated Section
         $api->group(['middleware' => 'api.custom.auth:admin'], function ($api) {
             $api->get('/me', 'UserController@getMe')->name('admin.me');
+
+            # Post
+            $api->post('/posts', 'PostController@postPost')->name('admin.posts.store');
+            $api->put('/posts/{id}', 'PostController@putPost')->name('admin.posts.update');
+
             $api->get('/comments', 'UserController@getComments')->name('admin.posts.index');
         });
     });

@@ -25,12 +25,12 @@ class Admin extends Authenticatable
         'password', 'remember_token', 'created_at', 'updated_at', 'deleted_at'
     ];
 
-    public function Posts()
+    public function posts()
     {
-        return $this->hasMany('App\Post');
+        return $this->hasMany('App\Post', 'author_id', 'id');
     }
 
-    public function Comments()
+    public function comments()
     {
         return $this->hasMany('App\Comment');
     }
