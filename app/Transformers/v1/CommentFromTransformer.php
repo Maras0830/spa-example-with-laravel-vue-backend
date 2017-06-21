@@ -18,7 +18,7 @@ class CommentFromTransformer extends TransformerAbstract
             'id'           => (int) $comment_from->id,
             'name'         => (string) $comment_from->name,
             'email'        => (string) $comment_from->email,
-            'type'         => (string) $comment_from instanceof User ? 'User' : 'Admin'
+            'type'         => (string) ($comment_from instanceof User ? 'User' : 'Admin')
         ];
     }
 }
