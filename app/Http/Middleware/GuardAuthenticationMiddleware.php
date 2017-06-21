@@ -19,7 +19,7 @@ class GuardAuthenticationMiddleware
     {
         if (!empty($auth)) {
             Config::set('auth.defaults.guard', $auth);
-            Config::set('jwt.user', 'App\\' . camel_case($auth));
+            Config::set('jwt.user', 'App\\' . ucfirst($auth));
         }
 
         return $next($request);
