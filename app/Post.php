@@ -33,4 +33,9 @@ class Post extends Model
     {
         return $this->hasMany('App\Comment')->whereNull('comment_id');
     }
+
+    public function all_comments()
+    {
+        return $this->hasMany('App\Comment');
+    }
 }

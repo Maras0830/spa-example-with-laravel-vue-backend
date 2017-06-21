@@ -33,6 +33,14 @@ $api->version('v1', ['prefix' => 'api', 'namespace' => 'App\Http\Controllers\API
         $api->group(['middleware' => 'api.custom.auth:user'], function ($api) {
             $api->get('/me', 'UserController@getMe')->name('user.me');
             $api->get('/comments', 'UserController@getComments')->name('user.comments.index');
+
+            # Posts Comments
+            $api->group(['prefix' => 'posts/{post_id}'], function ($api) {
+                $api->post('/comments', 'CommentController@postComments')->name('user.comments.store');
+                $api->post('/comments/{comment_id}', 'CommentController@postSubComments')->name('user.comments.store.sub');
+                $api->put('/comments/{comment_id}', 'CommentController@putComments')->name('user.comments.update');
+                $api->delete('/comments/{comment_id}', 'CommentController@deleteComments')->name('user.comments.delete');
+            });
         });
     });
 });
