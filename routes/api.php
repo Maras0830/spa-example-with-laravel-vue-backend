@@ -35,11 +35,11 @@ $api->version('v1', ['prefix' => 'api', 'namespace' => 'App\Http\Controllers\API
             $api->get('/comments', 'UserController@getComments')->name('user.comments.index');
 
             # Posts Comments
-            $api->group(['prefix' => 'posts/{post_id}'], function ($api) {
-                $api->post('/comments', 'CommentController@postComments')->name('user.comments.store');
-                $api->post('/comments/{comment_id}', 'CommentController@postSubComments')->name('user.comments.store.sub');
-                $api->put('/comments/{comment_id}', 'CommentController@putComments')->name('user.comments.update');
-                $api->delete('/comments/{comment_id}', 'CommentController@deleteComments')->name('user.comments.delete');
+            $api->group(['prefix' => 'posts/{post_id}/comments'], function ($api) {
+                $api->post('/', 'CommentController@postComments')->name('user.comments.store');
+                $api->post('/{comment_id}', 'CommentController@postSubComments')->name('user.comments.store.sub');
+                $api->put('/{comment_id}', 'CommentController@putComments')->name('user.comments.update');
+                $api->delete('/{comment_id}', 'CommentController@deleteComments')->name('user.comments.delete');
             });
         });
     });

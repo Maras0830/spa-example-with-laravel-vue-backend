@@ -26,12 +26,20 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers\API\v1\Admin'], functi
         $api->group(['middleware' => 'api.custom.auth:admin'], function ($api) {
             $api->get('/me', 'UserController@getMe')->name('admin.me');
 
+            $api->get('/comments', 'UserController@getComments')->name('admin.posts.index');
+
             # Post
             $api->post('/posts', 'PostController@postPost')->name('admin.posts.store');
             $api->put('/posts/{id}', 'PostController@putPost')->name('admin.posts.update');
             $api->delete('/posts/{id}', 'PostController@deletePost')->name('admin.posts.delete');
 
-            $api->get('/comments', 'UserController@getComments')->name('admin.posts.index');
+            # Posts Comments
+            $api->group(['prefix' => 'posts/{post_id}/comments'], function ($api) {
+                $api->post('/', 'CommentController@postComments')->name('admin.comments.store');
+                $api->post('/{comment_id}', 'CommentController@postSubComments')->name('admin.comments.store.sub');
+                $api->put('/{comment_id}', 'CommentController@putComments')->name('admin.comments.update');
+                $api->delete('/{comment_id}', 'CommentController@deleteComments')->name('admin.comments.delete');
+            });
         });
     });
 });

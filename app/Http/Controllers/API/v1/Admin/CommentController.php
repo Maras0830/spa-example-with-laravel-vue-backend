@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\API\v1\User;
+namespace App\Http\Controllers\API\v1\Admin;
 
 use App\Http\Requests\User\CommentsCreateRequest;
 use App\Http\Requests\User\CommentsUpdateRequest;
@@ -21,7 +21,7 @@ class CommentController extends Controller
 
         $post = $this->api->get('api/posts/' . $post_id);
 
-        $comment_input = array_merge($comment_input,['post_id' => $post_id, 'comment_from_id' => $user->id, 'comment_from_type' => 'App\\User']);
+        $comment_input = array_merge($comment_input,['post_id' => $post_id, 'comment_from_id' => $user->id, 'comment_from_type' => 'App\\Admin']);
 
         if (!$post)
             return $this->response->errorNotFound('Post not found');
@@ -48,7 +48,7 @@ class CommentController extends Controller
         if (!$post)
             return $this->response->errorNotFound('Post not found');
 
-        $comment = $post->all_comments()->where('id', $comment_id)->where('comment_from_id', $user->id)->where('comment_from_type', 'App\\User')->first();
+        $comment = $post->all_comments()->where('id', $comment_id)->where('comment_from_id', $user->id)->where('comment_from_type', 'App\\Admin')->first();
 
         if (!$comment)
             return $this->response->errorNotFound('Comment not found');
@@ -87,7 +87,7 @@ class CommentController extends Controller
         if (!$post)
             return $this->response->errorNotFound('Post not found');
 
-        $comment = $post->all_comments()->where('id', $comment_id)->where('comment_from_id', $user->id)->where('comment_from_type', 'App\\User')->first();
+        $comment = $post->all_comments()->where('id', $comment_id)->where('comment_from_id', $user->id)->where('comment_from_type', 'App\\Admin')->first();
 
         if (!$comment)
             return $this->response->errorNotFound('Comment not found');
