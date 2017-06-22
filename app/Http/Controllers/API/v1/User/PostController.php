@@ -14,7 +14,7 @@ class PostController extends Controller
 
     public function getPosts()
     {
-        $posts = Post::orderBy('created_at', 'DESC')->paginate(3);
+        $posts = Post::orderBy('created_at', 'DESC')->paginate(10);
 
         return $this->response->paginator($posts, new PostTransformer());
     }

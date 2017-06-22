@@ -14,7 +14,7 @@ class AuthorController extends Controller
 
     public function getAuthors()
     {
-        $authors = Admin::orderBy('created_at', 'DESC')->paginate(3);
+        $authors = Admin::orderBy('created_at', 'DESC')->paginate(10);
 
         return $this->response->paginator($authors, new AuthorTransformer());
     }
